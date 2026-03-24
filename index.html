@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>متجر الملابس</title>
+<style>
+body { font-family: Arial; direction: rtl; background:#f4f4f4; }
+h1 { text-align:center; }
+.container { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; }
+.card {
+  background:white; padding:10px; width:200px;
+  border-radius:10px; text-align:center;
+}
+img { width:100%; height:150px; object-fit:cover; }
+</style>
+</head>
+<body>
+
+<h1>🛍️ متجر الملابس</h1>
+
+<div class="container" id="products"></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// 🔥 ضع كودك هنا (الذي أرسلته)
+const firebaseConfig = {
+  apiKey: "AIzaSyCu-ZLIqFgvZSEm8KSn7Seh1X9lnHhGSh0",
+  authDomain: "shop-clothes-224a3.firebaseapp.com",
+  projectId: "shop-clothes-224a3",
+  storageBucket: "shop-clothes-224a3.firebasestorage.app",
+  messagingSenderId: "348817058494",
+  appId: "1:348817058494:web:dddc00d386edf6f1350cef"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadProducts(){
+  const querySnapshot = await getDocs(collection(db, "products"));
+  const container = document.getElementById("products");
+
+  querySnapshot.forEach((doc) => {
+    let p = doc.data();
+
+    container.innerHTML += `
+      <div class="card">
+        <img src="${p.image}">
+        <h3>${p.name}</h3>
+        <p>${p.price} دج</p>
+      </div>
+    `;
+  });
+}
+
+loadProducts();
+
+</script>
+
+</body>
+</html>
